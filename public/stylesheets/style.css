@@ -12,7 +12,6 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .twi-center-card{
@@ -23,6 +22,26 @@ body{
     color: white;
 }
 
+.twi-twitch-data-img{
+    height: 15vh;
+    width: 15vh;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+    border-radius: 1vh;
+}
+
+.twi-twitch-data-viewer{
+    margin-bottom: 2vh;
+}
+
+.twi-twitch-data-text{
+    padding-left: 2vh;
+}
+
+.twi-twitch-submit{
+    width: 25vh;
+}
+
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
     background-color: #343a40;
     color: white;
@@ -31,4 +50,24 @@ body{
 
 .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
     border-color: #7d7e80 #7d7e80 #7d7e80;
+}
+
+.twi-loader {
+    border: 10px solid #d2d2d2; /* Light grey */
+    border-top: 10px solid #42403e; /* Blue */
+    border-radius: 50%;
+    width: 7vh;
+    height: 7vh;
+    animation: spin 2s linear infinite;
+    margin: auto;
+    margin-top: 2vh;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.twi-text-input{
+    margin-top: 2vh;
 }
