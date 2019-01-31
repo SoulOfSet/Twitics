@@ -8,6 +8,8 @@
         <title><%= title %></title>
         <% include ../partials/includes.ejs %>
         <% include ../partials/header.ejs %>
+        <script src="/javascripts/follow_check.js"></script>
+
     </head>
     <body class="twi-dark-bg">
         <div class="container twi-max-height">
@@ -15,30 +17,30 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs nav-justified twi-nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Unfollowers</a>
+                            <a id="twi-unfollower-tab" onclick="changeTab('unfollowers')" class="nav-link active">Unfollowers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link twi-nav-link " href="#">Follow Lookup</a>
+                            <a id="twi-lookup-tab" onclick="changeTab('follow_lookup')" class="nav-link twi-nav-link">Follow Lookup</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
-                    <!--<div id="twi-unfollower-section">
+                    <div id="twi-unfollower-section">
                         <h5 class="card-title">View your unfollowers</h5>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Twitch Name">
+                            <input id="twi-unfollower-uname-input" type="text" class="form-control" placeholder="Twitch Name">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Lookup</button>
+                                <button onclick="lookupUser()" class="btn btn-outline-secondary" type="button">Lookup</button>
                             </div>
                         </div>
+                        <div class="twi-loader"></div>
                         <div class="twi-twitch-data-viewer">
-                            <div class="twi-loader"></div>
-                            <img class="twi-twitch-data-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/soulofset-profile_image-5db56a292a1ed1d6-300x300.jpeg">
+                            <img id="twi-twitch-data-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/soulofset-profile_image-5db56a292a1ed1d6-300x300.jpeg">
                             <p id="twi-twitch-name">SoulOfSet</p>
                             <hr>
                             <button id="twi-unfollow-validate-button" class="btn btn-outline-light twi-twitch-submit " type="button">Submit</button>
                         </div>
-                    </div>-->
+                    </div>
                     <div id="twi-lookup-section">
                         <h5 class="card-title">Check if users follow each other</h5>
                         <div class="input-group">
@@ -53,6 +55,7 @@
                             <button id="twi-unfollow-validate-button" class="btn btn-outline-light twi-twitch-submit " type="button">Check</button>
                         </div>
                     </div>
+                    <p id="twi-err-msg"></p>
                 </div>
             </div>
         </div>

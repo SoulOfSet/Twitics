@@ -22,7 +22,7 @@ body{
     color: white;
 }
 
-.twi-twitch-data-img{
+#twi-twitch-data-img{
     height: 15vh;
     width: 15vh;
     margin-bottom: 1vh;
@@ -59,8 +59,7 @@ body{
     width: 7vh;
     height: 7vh;
     animation: spin 2s linear infinite;
-    margin: auto;
-    margin-top: 2vh;
+    margin: 2vh auto auto;
 }
 
 @keyframes spin {
@@ -70,4 +69,21 @@ body{
 
 .twi-text-input{
     margin-top: 2vh;
+}
+
+#twi-lookup-section{
+    display: none;
+}
+
+.twi-loader{
+    display: none;
+}
+
+.twi-twitch-data-viewer{
+    display: none;
+}
+
+#twi-err-msg{
+    color: red;
+    text-align: center;
 }
