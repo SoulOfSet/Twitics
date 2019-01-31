@@ -1,3 +1,5 @@
+let userId = "";
+
 let changeTab = (tab)=>{
     if (tab === "unfollowers") {
         $("#twi-unfollower-section").show();
@@ -32,6 +34,7 @@ let lookupUser = ()=>{
                 $(".twi-twitch-data-viewer").show();
                 $("#twi-twitch-name").text(data.users[0].name);
                 $("#twi-twitch-data-img").attr("src", data.users[0].logo);
+                userId = data.users[0]._id;
             }
         });
     } else{
@@ -39,7 +42,6 @@ let lookupUser = ()=>{
         setErr("No name means no game");
     }
 };
-
 
 let isBadStatus = (status)=>{
   return status === "error" || status === "timeout" || status === "parsererror";
