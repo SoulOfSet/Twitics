@@ -34,6 +34,7 @@ let lookupUser = ()=>{
                 $(".twi-twitch-data-viewer").show();
                 $("#twi-twitch-name").text(data.users[0].name);
                 $("#twi-twitch-data-img").attr("src", data.users[0].logo);
+                console.log(data.users);
                 userId = data.users[0]._id;
             }
         });
