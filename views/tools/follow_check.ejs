@@ -30,34 +30,53 @@
                         <div class="input-group mb-3">
                             <input id="twi-unfollower-uname-input" type="text" class="form-control" placeholder="Twitch Name">
                             <div class="input-group-append">
-                                <button onclick="lookupUser()" class="btn btn-outline-secondary" type="button">Lookup</button>
+                                <button id="twi-lookup-button" onclick="lookupUser()" class="btn btn-outline-secondary" type="button">Lookup</button>
                             </div>
                         </div>
-                        <div class="twi-loader"></div>
                         <div class="twi-twitch-data-viewer">
                             <img id="twi-twitch-data-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/soulofset-profile_image-5db56a292a1ed1d6-300x300.jpeg">
                             <p id="twi-twitch-name">SoulOfSet</p>
                             <hr>
-                            <button id="twi-unfollow-validate-button" class="btn btn-outline-light twi-twitch-submit " type="button">Submit</button>
+                            <button id="twi-twitch-submit" onclick="getAllUnfollowers()" class="btn btn-outline-light" type="button">Submit</button>
                         </div>
+                        <div class="twi-loader"></div>
                     </div>
                     <div id="twi-lookup-section">
                         <h5 class="card-title">Check if users follow each other</h5>
                         <div class="input-group">
-                            <input type="text" class="form-control twi-text-input" placeholder="Followee">
+                            <input type="text" id="twi-lookup-followee" class="form-control twi-text-input" placeholder="Followee">
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control twi-text-input" placeholder="Follower">
+                            <input type="text" id="twi-lookup-follower" class="form-control twi-text-input" placeholder="Follower">
                         </div>
-                        <div class="twi-twitch-data-viewer">
-                            <div class="twi-loader"></div>
-                            <hr>
-                            <button id="twi-unfollow-validate-button" class="btn btn-outline-light twi-twitch-submit " type="button">Check</button>
-                        </div>
+                        <div class="twi-loader"></div>
+                        <button onclick="checkIsFollowing()" id="twi-twitch-check" class="btn btn-outline-light" type="button">Check</button>
+                        <hr>
+                        <p id="twi-follow-stat-msg"></p>
                     </div>
                     <p id="twi-err-msg"></p>
                 </div>
             </div>
         </div>
+        <div class="modal" id="twi-unfollower-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Unfollowers</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group twi-unfollower-list">
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
+
 </html>

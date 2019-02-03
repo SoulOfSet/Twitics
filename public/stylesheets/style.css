@@ -38,7 +38,7 @@ body{
     padding-left: 2vh;
 }
 
-.twi-twitch-submit{
+#twi-twitch-submit{
     width: 25vh;
 }
 
@@ -86,4 +86,71 @@ body{
 #twi-err-msg{
     color: red;
     text-align: center;
+}
+
+.modal-body
+{
+    background-color: #343a40;
+    color: #acacac;
+    height: auto;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-body li
+{
+    background-color: #343a40;
+    color: #acacac;
+}
+
+.modal-content
+{
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    background-color: #343a40;
+}
+
+.modal-footer
+{
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+    -moz-border-radius-bottomleft: 6px;
+    -moz-border-radius-bottomright: 6px;
+    background-color: #212529;
+}
+
+.modal-header
+{
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    background-color: #212529;
+    color: #acacac;
+}
+
+.modal-dialog{
+    position: relative;
+    display: table; /* This is important */
+    overflow-y: auto;
+    overflow-x: auto;
+    width: auto;
+    min-width: 300px;
+}
+
+#twi-unfollower-modal li:hover{
+    background-color: #2e3338;
+}
+
+#twi-twitch-check{
+    margin-top: 1vh;
+}
+
+#twi-follow-stat-msg{
+    margin-top: 1vh;
 }

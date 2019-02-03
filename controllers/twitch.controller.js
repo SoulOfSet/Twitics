@@ -3,11 +3,6 @@ const request = require('request');
 const CONFIG = require("../config/config");
 const TWITCH_USER_BY_ID_BASE_URL = "https://api.twitch.tv/kraken/users?login=";
 
-let following = [];
-let followers = [];
-let twitchGetUserFollowsURL = "";
-let twitchGetChannelFollows = "";
-
 exports.getUserData = (user, callback) => {
     request({
         headers: {
@@ -19,43 +14,36 @@ exports.getUserData = (user, callback) => {
     }, callback);
 };
 
-exports.getUnfollowers = (userId, callback)=>{
-    twitchGetUserFollowsURL = `https://api.twitch.tv/kraken/users/${userId}/follows/channels`;
-    twitchGetChannelFollows = `https://api.twitch.tv/kraken/channels/${userId}/follows`;
+exports.getFollowing = (userId, offset, callback)=>{
 
-    following = [];
-    followers = [];
-
-    collectFollowing(0, (err)=>{
+    collectFollowing(userId, offset, (err, followingTotal, following)=>{
         if(err){
             callback(err);
         } else{
-            collectFollowers(0, null, (err)=>{
-                if(err){
-                    callback(err);
-                } else{
-                    console.log(following.length);
-                    console.log(followers.length);
-                    let unfollowers = [];
-                    for(let i of following){
-                        if(followers.indexOf(i) === -1){
-                            unfollowers.push(i);
-                        }
-                    }
-                    callback(null, unfollowers);
-                }
-            });
-
+            callback(null, {total: followingTotal, following: following})
         }
     });
 
 };
 
-let collectFollowers = (offset, cursor, callback)=>{
+exports.getFollowers = (userId, offset, cursor, callback)=>{
+
+    collectFollowers(userId, offset, cursor, (err, followerTotal, followerCursor, followers)=>{
+        if(err){
+            callback(err);
+        } else{
+            callback(null, {total: followerTotal, cursor: followerCursor, followers: followers});
+        }
+    });
+
+};
+
+let collectFollowers = (userId, offset, cursor, callback)=>{
 
     let propertiesObject;
+    let twitchGetChannelFollowsURL = `https://api.twitch.tv/kraken/channels/${userId}/follows`;
 
-    if(cursor !== null){
+    if(cursor !== null && cursor !== ''){
         propertiesObject = {limit: 100, offset: offset, cursor: cursor};
     } else{
         propertiesObject = {limit: 100 , offset: offset};
@@ -67,33 +55,21 @@ let collectFollowers = (offset, cursor, callback)=>{
             'Accept': 'application/vnd.twitchtv.v5+json'
         },
         qs: propertiesObject,
-        uri: twitchGetChannelFollows,
+        uri: twitchGetChannelFollowsURL,
         method: 'GET'
     }, (err, res, body)=>{
-        if(err || JSON.parse(body).error){
-            console.log(body);
-            callback(new Error("An error occurred when collecting followers: " + JSON.parse(body).error.message));
+        if(getError(body, err)){
+            callback(new Error("An error occurred when collecting followers: " + getError(body, err)));
         } else{
             let followerData = JSON.parse(body);
             let followerSet = followerData.follows.map(a => a.user.name);
-            followers = followers.concat(followerSet);
-            let newOffSet = (offset + 100);
-
-            if(followerData._total > newOffSet){
-                if(newOffSet > 1600){
-                    cursor = followerData._cursor;
-                    newOffSet = 0;
-                }
-                collectFollowers(newOffSet, cursor, callback);
-            } else{
-                callback(null);
-            }
+            callback(null, followerData._total, followerData._cursor, followerSet);
         }
     });
 };
 
-let collectFollowing = (offset, callback)=>{
-
+let collectFollowing = (userId, offset, callback)=>{
+    let twitchGetUserFollowsURL = `https://api.twitch.tv/kraken/users/${userId}/follows/channels`;
     let propertiesObject = {limit: 100 , offset: offset};
     request({
         headers: {
@@ -104,19 +80,83 @@ let collectFollowing = (offset, callback)=>{
         uri: twitchGetUserFollowsURL,
         method: 'GET'
     }, (err, res, body)=>{
-        if(err){
-            callback(new Error("An error occurred when collecting following: " + JSON.parse(body).error.message));
+        if(getError(body, err)){
+            callback(new Error("An error occurred when collecting following: " + getError(body, err)));
         } else{
             let followingData = JSON.parse(body);
             let followingSet = followingData.follows.map(a => a.channel.name);
-            following = following.concat(followingSet);
+            callback(null, followingData._total, followingSet);
+        }
+    });
+};
 
-            if(followingData._total > (offset + 100)){
-                collectFollowing((offset + 100), callback);
+exports.checkIsFollowing = (followee, follower, callback)=>{
+
+    this.getUserData(followee + "," + follower, (err, rez, body)=>{
+        let followeeId = "";
+        let followerId = "";
+
+        if(getError(body, err)){
+            callback(new Error("An error occurred when checking follow status: " + getError(body, err)));
+        } else{
+            let userData = JSON.parse(body);
+
+            if(userData.users.length !== 2){
+                callback(new Error("Unable to find all specified users"));
             } else{
-                callback(null);
+                userData.users.forEach((entry)=>{
+                    if(entry.name === follower.toLowerCase()){
+                        followerId = entry._id;
+                    } else{
+                        followeeId = entry._id;
+                    }
+                });
+
+                let twitchGetIsFollowingURL = `https://api.twitch.tv/kraken/users/${followerId}/follows/channels/${followeeId}`;
+
+                request({
+                    headers: {
+                        'Client-ID': CONFIG.twitchKey,
+                        'Accept': 'application/vnd.twitchtv.v5+json'
+                    },
+                    uri: twitchGetIsFollowingURL,
+                    method: 'GET'
+                }, (err, res, body)=>{
+                    if(getError(body, err)){
+                        callback(new Error("An error occurred when checking follow status: " + getError(body, err)));
+                    } else{
+                        let isFollowingData = JSON.parse(body);
+
+                        if(isFollowingData.error){
+                            if(isFollowingData.error === "Not Found" && isFollowingData.message === "Follow not found"){
+                                callback(null, false);
+                            } else{
+                                callback(new Error(isFollowingData.message));
+                            }
+                        } else if(isFollowingData.channel){
+                            callback(null, true);
+                        } else{
+                            callback(new Error("Something went wrong"));
+                        }
+                    }
+                });
             }
         }
     });
 };
 
+
+let getError = (bodyErr, err)=>{
+    if(err && err.message){
+        return err.message
+    }
+
+    let errorJson = JSON.parse(bodyErr);
+    if(errorJson.error.message){
+        return errorJson.error.message;
+    } else if(errorJson.error){
+        return errorJson.error;
+    } else{
+        return null;
+    }
+}
