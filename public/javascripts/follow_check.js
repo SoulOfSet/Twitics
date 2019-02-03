@@ -4,6 +4,8 @@ let followers = [];
 let following = [];
 let currentlyProcessing = false;
 let cursor = "";
+let totalFollowers = 0;
+let totalFollowing = 0;
 
 let changeTab = (tab)=>{
     setErr("");
@@ -66,6 +68,8 @@ let getAllUnfollowers = ()=>{
         return;
     } else{
         currentlyProcessing = true;
+        totalFollowers = 0;
+        totalFollowing = 0;
     }
 
     //Reset vars
@@ -83,6 +87,7 @@ let getAllUnfollowers = ()=>{
             displayUnfollowers();
             $('#twi-twitch-submit').show();
             $(".twi-loader").hide();
+            updateUnfollowStatMsg("");
         });
     });
 };
@@ -101,6 +106,8 @@ let getFollowing = (callback)=>{
             } else{
                 let followingData = data;
                 following = following.concat(followingData.following);
+                totalFollowing = totalFollowing + data.following.length;
+                updateUnfollowStatMsg("Collecting following: " + totalFollowing + "/" + data.total);
                 if(followingData.total > offset){
                     offset = offset + 100;
                     getFollowing(callback);
@@ -116,7 +123,6 @@ let getFollowing = (callback)=>{
 };
 
 let getFollowers = (callback)=>{
-
     if (userId !== undefined && userId !== "") {
         $.get("/twitch/get_followers", {userId: userId, offset: offset, cursor: cursor}, (data, status)=>{
             if(isBadStatus(status)){
@@ -130,6 +136,9 @@ let getFollowers = (callback)=>{
             } else{
                 let followerData = data;
                 followers = followers.concat(followerData.followers);
+                totalFollowers = totalFollowers + data.followers.length;
+                console.log(data);
+                updateUnfollowStatMsg("Collecting followers: " + totalFollowers + "/" + data.total);
                 if(followerData.total > followers.length){
                     offset = offset + 100;
                     if(offset > 1600){
@@ -189,7 +198,6 @@ let checkIsFollowing = ()=>{
         $('.twi-loader').hide();
     } else{
         $.get("/twitch/get_is_following", {follower: follower, followee: followee}, (data, status)=>{
-            console.log("wat");
             if(isBadStatus(status)){
                 setErr("An error occurred retrieving the data");
                 followers = [];
@@ -209,7 +217,6 @@ let checkIsFollowing = ()=>{
         }).fail((xhr)=>{
             $('#twi-twitch-check').show();
             $('.twi-loader').hide();
-            console.log(xhr);
             setErr(xhr.responseJSON.error)
         });
     }
@@ -225,6 +232,10 @@ let setFollowStatus = (status)=>{
 
 let setErr = (err)=>{
   $('#twi-err-msg').text(err);
+};
+
+let updateUnfollowStatMsg = (msg)=>{
+  $('#twi-unfollower-stat-msg').text(msg);
 };
 
 $(document).ready(()=>{

@@ -152,11 +152,7 @@ let getError = (bodyErr, err)=>{
     }
 
     let errorJson = JSON.parse(bodyErr);
-    if(errorJson.error.message){
-        return errorJson.error.message;
-    } else if(errorJson.error){
-        return errorJson.error;
-    } else{
-        return null;
+    if(errorJson.error){
+        return errorJson.error.message ? errorJson.error.message : errorJson.error ? errorJson.error : null;
     }
-}
+};
