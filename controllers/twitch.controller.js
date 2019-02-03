@@ -122,21 +122,25 @@ exports.checkIsFollowing = (followee, follower, callback)=>{
                     uri: twitchGetIsFollowingURL,
                     method: 'GET'
                 }, (err, res, body)=>{
-                    if(getError(body, err)){
-                        callback(new Error("An error occurred when checking follow status: " + getError(body, err)));
+                    if(JSON.parse(body).message === "Follow not found"){
+                        callback(null, false);
                     } else{
-                        let isFollowingData = JSON.parse(body);
-
-                        if(isFollowingData.error){
-                            if(isFollowingData.error === "Not Found" && isFollowingData.message === "Follow not found"){
-                                callback(null, false);
-                            } else{
-                                callback(new Error(isFollowingData.message));
-                            }
-                        } else if(isFollowingData.channel){
-                            callback(null, true);
+                        if(getError(body, err)){
+                            callback(new Error("An error occurred when checking follow status: " + getError(body, err)));
                         } else{
-                            callback(new Error("Something went wrong"));
+                            let isFollowingData = JSON.parse(body);
+                            console.log(isFollowingData);
+                            if(isFollowingData.error){
+                                if(isFollowingData.error === "Not Found" && isFollowingData.message === "Follow not found"){
+                                    callback(null, false);
+                                } else{
+                                    callback(new Error(isFollowingData.message));
+                                }
+                            } else if(isFollowingData.channel){
+                                callback(null, true);
+                            } else{
+                                callback(new Error("Something went wrong"));
+                            }
                         }
                     }
                 });
