@@ -12,72 +12,86 @@
 
     </head>
     <body class="twi-dark-bg">
-        <div class="container twi-max-height">
-            <div class="card text-center twi-center-card bg-dark text-white">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs nav-justified twi-nav-tabs">
-                        <li class="nav-item">
-                            <a id="twi-unfollower-tab" onclick="changeTab('unfollowers')" class="nav-link active">Unfollowers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="twi-lookup-tab" onclick="changeTab('follow_lookup')" class="nav-link twi-nav-link">Follow Lookup</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div id="twi-unfollower-section">
-                        <h5 class="card-title">View your unfollowers</h5>
-                        <div class="input-group mb-3">
-                            <input id="twi-unfollower-uname-input" type="text" class="form-control" placeholder="Twitch Name">
-                            <div class="input-group-append">
-                                <button id="twi-lookup-button" onclick="lookupUser()" class="btn btn-outline-secondary" type="button">Lookup</button>
-                            </div>
-                        </div>
-                        <div class="twi-twitch-data-viewer">
-                            <img id="twi-twitch-data-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/soulofset-profile_image-5db56a292a1ed1d6-300x300.jpeg">
-                            <p id="twi-twitch-name">SoulOfSet</p>
-                            <hr>
-                            <button id="twi-twitch-submit" onclick="getAllUnfollowers()" class="btn btn-outline-light" type="button">Submit</button>
-                        </div>
-                        <div class="twi-loader"></div>
-                        <p id="twi-unfollower-stat-msg"></p>
-                    </div>
-                    <div id="twi-lookup-section">
-                        <h5 class="card-title">Check if users follow each other</h5>
-                        <div class="input-group">
-                            <input type="text" id="twi-lookup-followee" class="form-control twi-text-input" placeholder="Followee">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" id="twi-lookup-follower" class="form-control twi-text-input" placeholder="Follower">
-                        </div>
-                        <div class="twi-loader"></div>
-                        <button onclick="checkIsFollowing()" id="twi-twitch-check" class="btn btn-outline-light" type="button">Check</button>
-                        <hr>
-                        <p id="twi-follow-stat-msg"></p>
-                    </div>
-                    <p id="twi-err-msg"></p>
-                </div>
-            </div>
-        </div>
-        <div class="modal" id="twi-unfollower-modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Unfollowers</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <ul class="list-group twi-unfollower-list">
+        <div id="twi-wrap">
+            <div class="container twi-max-height">
+                <div class="card text-center twi-center-card bg-dark text-white">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs nav-justified twi-nav-tabs">
+                            <li class="nav-item">
+                                <a id="twi-unfollower-tab" onclick="changeTab('unfollowers')" class="nav-link active">Unfollowers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="twi-lookup-tab" onclick="changeTab('follow_lookup')" class="nav-link twi-nav-link">Follow Lookup</a>
+                            </li>
                         </ul>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="card-body">
+                        <div id="twi-unfollower-section">
+                            <h5 class="card-title">View your unfollowers</h5>
+                            <div class="input-group mb-3">
+                                <input id="twi-unfollower-uname-input" type="text" class="form-control" placeholder="Twitch Name">
+                                <div class="input-group-append">
+                                    <button id="twi-lookup-button" onclick="lookupUser()" class="btn btn-outline-secondary" type="button">Lookup</button>
+                                </div>
+                            </div>
+                            <div class="twi-twitch-data-viewer">
+                                <img id="twi-twitch-data-img" src="https://static-cdn.jtvnw.net/jtv_user_pictures/soulofset-profile_image-5db56a292a1ed1d6-300x300.jpeg">
+                                <p id="twi-twitch-name">SoulOfSet</p>
+                                <hr>
+                                <button id="twi-twitch-submit" onclick="getAllUnfollowers()" class="btn btn-outline-light" type="button">Submit</button>
+                            </div>
+                            <div class="twi-loader"></div>
+                            <p id="twi-unfollower-stat-msg"></p>
+                        </div>
+                        <div id="twi-lookup-section">
+                            <h5 class="card-title">Check if users follow each other</h5>
+                            <div class="input-group">
+                                <input type="text" id="twi-lookup-followee" class="form-control twi-text-input" placeholder="Followee">
+                            </div>
+                            <div class="input-group">
+                                <input type="text" id="twi-lookup-follower" class="form-control twi-text-input" placeholder="Follower">
+                            </div>
+                            <div class="twi-loader"></div>
+                            <button onclick="checkIsFollowing()" id="twi-twitch-check" class="btn btn-outline-light" type="button">Check</button>
+                            <hr>
+                            <p id="twi-follow-stat-msg"></p>
+                        </div>
+                        <p id="twi-err-msg"></p>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer twi-footer">
+                <div class="twi-footer-text">
+                    <span class="twi-footer-span">
+                        <i class="twi-fab fab fa-discord"></i><a href="https://discord.gg/qFRsCGW">F4F Discord</a>
+                    </span>
+                    <span class="twi-footer-span">
+                        <i class="twi-fab fab fa-twitch"></i><a href="https://www.twitch.tv/soulofset">Follow SoulOfSet</a>
+                    </span>
+                    <span class="twi-footer-span">
+                        <i class="twi-fab fab fa-paypal"></i><a href="https://paypal.me/soulofset?locale.x=en_US">Support Development</a>
+                    </span>
+                </div>
+            </footer>
+            <div class="modal" id="twi-unfollower-modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Unfollowers</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group twi-unfollower-list">
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
-
 </html>

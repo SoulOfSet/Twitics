@@ -94,7 +94,7 @@ body{
     color: #acacac;
     height: auto;
     max-height: 60vh;
-    overflow-y: auto;
+    overflow-y: auto !important;
 }
 
 .modal-body li
@@ -153,4 +153,44 @@ body{
 
 #twi-follow-stat-msg{
     margin-top: 1vh;
+}
+
+.footer {
+    position: relative;
+    margin-top: -15vh; /* negative value of footer height */
+    height: 15vh;
+    clear:both;
+}
+
+.twi-footer{
+    text-align: center;
+    background-color: #343a40!important;
+}
+
+.twi-footer-text{
+    height: 100%;
+    line-height: 8vh;
+}
+
+#twi-wrap {
+    min-height: 100%;
+    height: 100%;
+    /* Negative indent footer by its height */
+    margin: 0 auto -15vh;
+    /* Pad bottom by footer height */
+    overflow-y: hidden;
+}
+
+.twi-footer-span{
+    padding-left: 2vw;
+    display: inline-block;
+}
+.twi-fab{
+    padding-right: 0.5vw;
+    color: white;
+    font-size: 2.5vh;
+}
+
+.twi-footer-span a{
+
 }
